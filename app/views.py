@@ -118,6 +118,7 @@ def index():
 
     if request.method == "POST":
         # assign form data to variables
+        return "I am here"
         email = request.form.get('email', '', type=str).strip()
         division_short_name = request.form.get('division', '', type=str)
         try:
