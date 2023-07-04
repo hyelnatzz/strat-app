@@ -146,6 +146,10 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/division/<string:short_name>')
+def visit_div(short_name):
+    division = Division.query.filter_by(short_name=short_name).first()
+    return redirect(url_for('projects', division_id=division.id))
 
 # Return projects page
 @app.route('/divisions/<int:division_id>', methods=["GET", "POST"])
