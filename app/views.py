@@ -420,7 +420,7 @@ def create_xlsx(deliverables):
         action_item = deliverable.action_item
         division = action_item.project.Division
         supporting_divisions = action_item.project.supporting_divisions
-
+        return action_item.title
         div_output = division.short_name
         print(div_output)
         if len(supporting_divisions) > 0:
