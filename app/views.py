@@ -75,6 +75,11 @@ def logout():
 
 #     return render_template('register.html', form=form, msg=msg, success=success)
 
+@app.route('/setup', methods=['GET'])
+def setup():
+    db.create_all()
+    return redirect(url_for('populate_db'))
+
 # Authenticate user
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -118,7 +123,6 @@ def index():
 
     if request.method == "POST":
         # assign form data to variables
-        return "I am here"
         email = request.form.get('email', '', type=str).strip()
         division_short_name = request.form.get('division', '', type=str)
         try:
