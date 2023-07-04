@@ -183,10 +183,12 @@ def projects(division_id):
         new_project.title = form_data.get('title')
         new_project.description = form_data.get('description')
         new_project.date_expected = datetime.strptime(form_data.get('date_expected'), DATE_FORMAT)
-
-        division = Division.query.filter_by(short_name="PRS").first()
-        new_project.division = division
+        new_project.division_id = division_id
         new_project.save()
+
+        # division = Division.query.filter_by(id=division_id).first()
+        # new_project.division = division
+
 
         # Add supporting divisions
         if form_data.get('CO') == "on":
@@ -214,6 +216,7 @@ def projects(division_id):
 
 
         flash("Project Added Success fully")
+        return redirect(url_for('projects', division_id=division_id))
     return render_template('projects.html', division=division, data=data)
 
 
