@@ -232,6 +232,7 @@ def action_items(project_id):
         data['division'] = "All Divisions"
         data['division_id'] = 0
         data['project'] = "All Projects"
+        data['date_now'] = datetime.now()
 
     else:
         project = Project.query.get(project_id)
