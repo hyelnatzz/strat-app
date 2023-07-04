@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <main>
+        <section class="container">
+            <div class="box" style="max-width: 760px; margin: 0 auto; width:fit-content;">
+                <h1 class="block title is-5 mb-2">{{ division['name'] }} Projects</h1>
+                {% if current_user.is_authenticated %}
+                  <a class="button is-primary is-small js-modal-trigger mb-3" data-target="modal-js-example" id="showModal">
+                    <strong>Add Project</strong>
+                  </a>
+                {% endif %}
+                <div class="is-flex is-flex-direction-row">
+                    <table class="table is-size-7">
+                        <thead>
+                            <th>Title</th>
+                            <th>Action Items</th>
+                            <th>Deliverables</th>
+                        </thead>
+                        <tbody>
+                          {% for project in data %}
+                            <tr>
+                              <td><a href="{{url_for('action_items', project_id=project.id)}}">{{project['title']}}</a></td>
+                              <td>{{project['action_items']}}</td>
+                              <td>{{project['deliverable_count']}}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+              </div>
+
+              {% if current_user.is_authenticated %}
+              <a class="button is-primary is-small js-modal-trigger mb-3" data-target="modal-js-example" id="showModal">
+                <strong>Add Project</strong>
+              </a>
+            {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">New Project</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <form action="{{url_for('projects', division_id=division['id'])}}" method="post">
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                      <input class="input" name="title" type="text" placeholder="Text input">
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Supporting Divisions</label>
+                    <div class="control">
+                      <label class="checkbox">
+                      <input name="CO" type="checkbox">
+                      CO
+                      </label>
+                    </div>
+                    <div class="control">
+                      <label class="checkbox">
+                      <input name="CA" type="checkbox">
+                      CA
+                      </label>
+                    </div>
+                    <div class="control">
+                      <label class="checkbox">
+                      <input name="EPM" type="checkbox">
+                      EPM
+                      </label>
+                    </div>
+                    <div class="control">
+                      <label class="checkbox">
+                      <input name="LLC" type="checkbox">
+                      LLC
+                      </label>
+                    </div>
+                    <div class="control">
+                      <label class="checkbox">
+                      <input name="MCR" type="checkbox">
+                      MCR
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Expected completion date</label>
+                    <div class="control">
+                        <input name="date_expected" class="input" type="date">
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                      <textarea name="description" class="textarea" placeholder="Description"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="field is-grouped">
+                    <div class="control">
+                      <button class="button is-link" type="submit">Submit</button>
+                    </div>
+                    <div class="control">
+                      <button class="button is-link is-light">Cancel</button>
+                    </div>
+                  </div>
+            </form>
+          </section>
+        </div>
+      </div>
+
+<script>
+       document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById("modal");
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+</script>
+{% endblock %}

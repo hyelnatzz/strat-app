@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main style="max-width: 760px; margin: 0 auto">
+        <section class="container">
+            <div class="box">
+                <h1 class="heading block mb-1">Feeder Renaming Project in PRS</h1>
+                <h2 class="title is-4 block" >Feeder Nomenclature Action Item</h2>
+            </div>
+            <div class="box pt-3" >
+                <h1 class="block title is-5 mb-2">Update Action Item</h1>
+                <form action="{{url_for('edit_action', action_item_id=action_item_id)}}" method="post" class="form">
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input name="title" class="input" value="{{data['title']}}" type="text" placeholder="Title">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <textarea name="description" class="textarea" placeholder="Action Item description">{{data['description']}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Expected Completion Date</label>
+                        <div class="control">
+                            <input name="date_expected" value="{{data['date_expected']}}" class="input" type="date">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Development and Assignment of Variables</label>
+                        <div class="control">
+                            <select name="dev_n_assigned_var" id="" class="input">
+                                <option value="">Select</option>
+                                <option value="No" {% if data['dev_n_assigned_var'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['dev_n_assigned_var'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Management Approval</label>
+                        <div class="control">
+                            <select name="mgmt_approval" id="" class="input">
+                                <option value="">Select</option>
+                                <option value="No" {% if data['mgmt_approval'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['mgmt_approval'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Commissioner's Approval</label>
+                        <div class="control">
+                            <select name="commissioner_approval" id="" class="input">
+                                <option value="">Select</option>
+                                <option value="No" {% if data['commissioner_approval'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['commissioner_approval'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Published or Completed</label>
+                        <div class="control">
+                            <select name="published_or_completed" id="" class="input">
+                                <option value="">Select</option>
+                                <option value="No" {% if data['published_or_completed'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['published_or_completed'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Reason for Delay (Divisional)</label>
+                        <div class="control">
+                            <select name="reason_for_delay_div" id="" class="input">
+                                <option value="">Select a reason</option>
+                                <option value="I have discussed with my colleagues yet no solution." {% if data['reason_for_delay_div'] == 'I have discussed with my colleagues yet no solution.' %}selected{% endif %}>I have discussed with my colleagues yet no solution.</option>
+                                <option value="I have discussed this with my unit Head" {% if data['reason_for_delay_div'] == 'I have discussed this with my unit Head' %}selected{% endif %}>I have discussed this with my unit Head</option>
+                                <option value="I have discussed this with my Divisional Head" {% if data['reason_for_delay_div'] == 'I have discussed this with my Divisional Head' %}selected{% endif %}>I have discussed this with my Divisional Head</option>
+                                <option value="This challenge has been discussed with the Commissioner" {% if data['reason_for_delay_div'] == 'This challenge has been discussed with the Commissioner' %}selected{% endif %}>This challenge has been discussed with the Commissioners</option>
+                                <option value="This challenge has been discussed with the Commission" {% if data['reason_for_delay_div'] == 'This challenge has been discussed with the Commission' %}selected{% endif %}>This challenge has been discussed with the Commission</option>
+                                <option value="The Commission has taken a decision" {% if data['reason_for_delay_div'] == 'The Commission has taken a decision' %}selected{% endif %}>The commission has taken a decision</option>
+                                <option value="The Commission scheduled a date to discuss" {% if data['reason_for_delay_div'] == 'The Commission scheduled a date to discuss' %}selected{% endif %}>The Commission scheduled a date to discuss</option>
+                                <option value="It has been finalized and resolved" {% if data['reason_for_delay_div'] == 'It has been finalized and resolved' %}selected{% endif %}>It has been finalized and resolved</option>
+                                <option value="Others" {% if data['reason_for_delay_div'] == 'Others' %}selected{% endif %}>Others</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Presented and Approved at the Commission's Meeting</label>
+                        <div class="control">
+                            <select name="presented_at_comm_meeting" id="" class="input">
+                                <option value="">select</option>
+                                <option value="No" {% if data['presented_at_comm_meeting'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['presented_at_comm_meeting'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Finalized at Commission Level</label>
+                        <div class="control">
+                            <select name="finalized_at_comm" id="" class="input">
+                                <option value="">select</option>
+                                <option value="No" {% if data['finalized_at_comm'] == False %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if data['finalized_at_comm'] == True %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Reason for Delay (Commission)</label>
+                        <div class="control">
+                            <textarea class="textarea" name="reason_for_delay_comm" id="" placeholder="Reason for delay at Commision">{{data['reason_for_delay_comm']}}</textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link" type="submit">Update</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-light">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

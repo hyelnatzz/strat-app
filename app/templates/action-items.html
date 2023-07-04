@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+    {% block content %}
+    <main>
+        <section class="container">
+            <div class="box" style="max-width: 760px; margin: 0 auto; width: fit-content;">
+                <h1 class="heading"><a href="{{url_for('projects', division_id=data['division_id'])}}">{{data['division']}}</a></h1>
+                <h1 class="block title is-4 mb-2">{{data['project']}}</h1>
+
+                <div class="block">
+                    <p class="mb-2 heading">Action Items</p>
+                    {% if current_user.is_authenticated %}
+                      <a class="button is-primary is-small mb-2 js-modal-trigger" id="showModal">
+                        <strong>Add Action Item</strong>
+                      </a>
+                    {% endif %}
+
+
+                    <table class="table is-size-7 mb-0">
+                        <thead>
+                            <th>Action Title</th>
+                            <th>Status</th>
+                            <th>Time Remaining</th>
+                        </thead>
+                        <tbody>
+                          {% for item in data['action_items'] %}
+                            <tr>
+                              <td><a href="{{url_for('deliverables', action_item_id=item['id'])}}">{{item['title']}}</a></td>
+                              <td> <span class="tag is-{{item['status_class']}} is-light">{{item['status']}}</span></td>
+                              <td> <p>~ {{moment(item['date_expected']).fromNow(no_suffix=True)}} ({{ moment(item['date_expected']).diff(data['date_now'], 'days') }} days)</p></td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      {% if current_user.is_authenticated %}
+                      <a class="button is-primary is-small mb-2 js-modal-trigger" id="showModal">
+                        <strong>Add Action Item</strong>
+                      </a>
+                      {% endif %}
+
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="modal" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">New Action Item for Feeder Renaming Project</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <form action="#" method="post">
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input name="title" class="input" type="text" placeholder="Title">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <textarea name="description" class="textarea" placeholder="Description"></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Expected Completion Date</label>
+                    <div class="control">
+                        <input name="date_expected" class="input" type="date">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link" type="submit">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        </div>
+    </div>
+
+<script>
+       document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById("modal");
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/vendor/bulma.css')}}">
+    <title>Strategic Plan | Home</title>
+    {{ moment.include_moment() }}
+</head>
+<body>
+        <!-- Navigation Bar -->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    NERC
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                <a class="navbar-item" href="{{url_for('index')}}">
+                    Home
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Download
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{{url_for('download_all')}}">
+                            All
+                        </a>
+                        <a class="navbar-item" href="{{url_for('action_items', project_id=0)}}">
+                            Selected
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        View All
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{{url_for('projects', division_id=0)}}">
+                            Projects
+                        </a>
+                        <a class="navbar-item" href="{{url_for('action_items', project_id=0)}}">
+                            Action Items
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </nav>
+    <!-- Page content     -->
+    {% block content %}
+    {% endblock %}
+    <footer>
+        <a href="" class="is-size-7" style="display: block; text-align: center; margin-top: 2em">NERC &copy; 2023</a>
+    </footer>
+</body>
+</html>

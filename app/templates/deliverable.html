@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <main>
+        <section class="container" style="max-width: 760px; margin: 0 auto">
+
+            <div class="box">
+                <h1 class="heading mb-0"><a href="{{url_for('projects', division_id=data['division_id'])}}">{{data['division']}}</a></h1>
+                <h1 class="block title is-6" style="margin-bottom: 5px"><a href="{{url_for('action_items', project_id=data['project_id'])}}">{{data['project']}} Project</a></h1>
+                <div class="block">
+                    <h1 class="heading is-size-8 mb-0">Action Item</h1>
+                    <p class="mb-3 title is-7"><a href="{{url_for('deliverables', action_item_id=data['action_item_id'])}}">{{data['action_item']}}</a></p>
+                    <p class="mb-1 title is-6">{{data['title']}} <span class="tag is-light is-{{data['status_class']}}">{{data['status']}}</span></p>
+
+                    <a class="button is-primary is-small js-modal-trigger mb-3" id="showModal">
+                        <strong>Update</strong>
+                    </a>
+                    <a class="button is-danger is-small mb-3" href="{{url_for('delete_deliverable', deliverable_id=deliverable_id)}}">
+                        <strong>Delete</strong>
+                    </a>
+                    <div class="box">
+                        <h1 class="title is-5 mb-0">Description</h1>
+                        <p class="mb-4">{{data['description']}}</p>
+
+                        <h1 class="title is-7 mb-0">Action Item time remaining</h1>
+
+                        <p>approximately {{moment(data['date_expected_display']).fromNow(no_suffix=True)}} ({{ moment(data['date_expected_display']).diff(data['date_now'], 'days') }} days)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="modal" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Update Deliverable</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <form action="#" method="post">
+                <h1 class="block title is-4 mb-1">Feeder Nomenclature schemas</h1>
+                <h1 class="title is-7 mb-0">Created on: {{data['date_created']}}</h1>
+
+                <form action="{{url_for('deliverable', deliverable_id=deliverable_id)}}" method="post" class="form">
+
+                    <div class="field">
+                        <label class="label">Status</label>
+                        <div class="control">
+                            <select name="status" id="" class="input">
+                                <option value="Not Started" {% if data['status'] == 'Not Started' %} selected {% endif %}>Not Started</option>
+                                <option value="In Progress" {% if data['status'] == 'In Progress' %} selected {% endif %}>In Progress</option>
+                                <option value="Completed" {% if data['status'] == 'Completed' %} selected {% endif %}>Completed</option>
+                            </select>
+                            <button class="button is-link mt-2" type="submit">Update</button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input name="title" class="input" type="text" value="{{data['title']}}" placeholder="title">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <textarea name="description" class="textarea" value="{{data['description']}}" placeholder="Description">{{data['description']}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Expected Completion Date</label>
+                        <div class="control">
+                            <input name="date_expected" value="{{data['date_expected']}}" class="input" type="date">
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link" type="submit">Update</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-light" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </form>
+        </section>
+        </div>
+    </div>
+
+<script>
+       document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById("modal");
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+</script>
+
+{% endblock %}
