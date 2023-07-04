@@ -422,7 +422,7 @@ def create_xlsx(deliverables):
         supporting_divisions = action_item.project.supporting_divisions
 
         div_output = division.short_name
-
+        print(div_output)
         if len(supporting_divisions) > 0:
             div_output += ' SUPPORTED BY '
             for division in supporting_divisions:
