@@ -16,7 +16,7 @@
                     NERC
                 </a>
 
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <a role="button" id="nav-toggle" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -93,5 +93,15 @@
     <footer>
         <a href="" class="is-size-7" style="display: block; text-align: center; margin-top: 2em">NERC &copy; 2023</a>
     </footer>
+    <script>
+        (function () {
+            var burger = document.querySelector('.navbar-burger');
+            var menu = document.querySelector('#' + burger.dataset.target);
+            burger.addEventListener('click', function () {
+                burger.classList.toggle('is-active');
+                menu.classList.toggle('is-active');
+            });
+        })();
+    </script>
 </body>
 </html>
