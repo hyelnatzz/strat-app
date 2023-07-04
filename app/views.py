@@ -120,22 +120,24 @@ def index():
         # assign form data to variables
         email = request.form.get('email', '', type=str).strip()
         division_short_name = request.form.get('division', '', type=str)
+        try:
+                # filter User out of database through username
+            user = Users.query.filter_by(email=email).first()
+            division = Division.query.filter_by(short_name=division_short_name).first()
 
-            # filter User out of database through username
-        user = Users.query.filter_by(email=email).first()
-        division = Division.query.filter_by(short_name=division_short_name).first()
+            if user is None:
+                new_user = Users(email)
+                new_user.Division = division
+                new_user.save()
+                return redirect(url_for('projects', division_id = division.id))
 
-        if user is None:
-            new_user = Users(email)
-            new_user.Division = division
-            new_user.save()
-            return redirect(url_for('projects', division_id = division.id))
-
-        if user:
-            login_user(user)
-            return redirect(url_for('projects', division_id = user.Division.id))
-        else:
-            flash("Something went wront. Please try again.")
+            if user:
+                login_user(user)
+                return redirect(url_for('projects', division_id = user.Division.id))
+            else:
+                flash("Something went wront. Please try again.")
+        except:
+            return "something went wrong"
 
     return render_template('index.html')
 
